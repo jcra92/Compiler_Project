@@ -26,11 +26,13 @@ class Syntax{
 	void mas_factores(void);
 	void constant(void);
 	void errores (int codigo);
+	void loop(void);
 	
 	Lexic lexic; 
 	Code_Generator code_Generator;
 
 	public:
+	int inter = 0;
 	Syntax(const char *fuente, const char *objeto, int traza);
 	~Syntax(void);
 };
@@ -262,6 +264,7 @@ void Syntax::condicional(void){
 	char token;
 	if (lexic.existeTraza())
 		cout<<"Syntax Analysis: <CONDICIONAL>"<<endl;
+	inter=0;
 	comparacion();
 	token=lexic.siguienteToken();
 	if ((token!='?')) 
@@ -272,6 +275,19 @@ void Syntax::condicional(void){
 	sentencia();
 	code_Generator.etiqueta2();
 }
+
+void Syntax::loop(void){
+char token;
+if (lexic.existeTraza())
+cout<<"ANALISIS SINTACTICO: <LOOP>"<<endl;
+inter=1;
+comparacion();
+token=lexic.siguienteToken();
+if ((token!=',')) errores(13);
+sentencia();
+code_Generator.etiqueta3();
+}
+
 
 void Syntax::comparacion(void){
 	char token;
@@ -290,7 +306,12 @@ void Syntax::comparacion(void){
 		code_Generator.cond2(token);
 	token=lexic.siguienteToken();
 	if (((token>='0') && (token<='9')) || ((token>='a') && (token<='Z')) || (token='.')) {
-		code_Generator.cond3(token);
+		if (inter == 0){ 
+			code_Generator.cond3(token);
+			}
+		if (inter == 1){ 
+			code_Generator.cond4(token);
+		}
 	}
 	}
 	else 
