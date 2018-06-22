@@ -8,8 +8,8 @@ class Code_Generator{
 	char *nombreFichero; // Nombre del fichero objeto de salida
 	FILE *salida; // Fichero objeto de salida
 	public:
-	int contador = 0;
-	int contetiqueta = 0;
+	int contador = 1;
+	int contetiqueta = 1;
 	
 	Code_Generator(const char *unNombreFichero);
 	~Code_Generator();
@@ -29,8 +29,10 @@ class Code_Generator{
 	void cond1(const char direccion);
 	void cond2(const char direccion);
 	void cond3(const char direccion);
+	void cond4(const char direccion);
 	void etiqueta();
 	void etiqueta2();
+	void etiqueta3();
 };
 
 Code_Generator::Code_Generator(const char *unNombreFichero){
@@ -145,6 +147,31 @@ fputs(":\n",salida);
 contador++;
 }
 
+void Code_Generator::cond4(const char caracter)
+{
+fputc(caracter, salida);
+fputs(")\n",salida);
+cout<< "L"<<(contetiqueta-1)<< endl;
+fputs("L",salida);
+fprintf(salida, "%d", contetiqueta-1);
+fputs(":\n",salida);
+cout<< "IF T"<<contador<<" GOTO L"<<contetiqueta<< endl;
+fputs("IF T",salida);
+fprintf(salida, "%d", contador);
+fputs(" GOTO L",salida);
+fprintf(salida, "%d", contetiqueta);
+fputc('\n',salida);
+cout<< "GOTO L"<<contetiqueta+1<< endl;
+fputs("GOTO L",salida);
+fprintf(salida, "%d", contetiqueta+1);
+fputc('\n',salida);
+cout<< "L"<<contetiqueta<< endl;
+fputs("L",salida);
+fprintf(salida, "%d", contetiqueta);
+fputs(":\n",salida);
+contador++;
+}
+
 void Code_Generator::etiqueta(){
 contetiqueta++;
 cout<< "GOTO L"<<contetiqueta+1<< endl;
@@ -159,6 +186,20 @@ fputs(":\n",salida);
 
 void Code_Generator::etiqueta2(){
 contetiqueta++;
+cout<< "L"<<contetiqueta<< endl;
+fputs("L",salida);
+fprintf(salida, "%d", contetiqueta);
+fputs(":\n",salida);
+contetiqueta++;
+}
+
+void Code_Generator::etiqueta3()
+{
+contetiqueta++;
+cout<< "GOTO L"<<contetiqueta-2<< endl;
+fputs("GOTO L",salida);
+fprintf(salida, "%d", contetiqueta-2);
+fputc('\n',salida);
 cout<< "L"<<contetiqueta<< endl;
 fputs("L",salida);
 fprintf(salida, "%d", contetiqueta);

@@ -57,6 +57,7 @@ char Lexic::siguienteToken(void){
 		case'M': //Word to begin program
 		case'R': //Word to Read
 		case'W': //palabra reserva
+		case'L':
 		case'I':
 		case'=': //asignación
 		case'(': //parentesis
